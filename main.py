@@ -125,13 +125,21 @@ if __name__ == "__main__":
         year, month, day, hour, minute = now()
         print(year, month, day, hour, minute)
         for eq in get_list_eq():
-            if eq["year"] == year and eq["month"] == month and eq["day"] == day:
-                if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
-                    dif_min = abs((hour * 60 + minute) - (eq["hour"] * 60 + eq["minute"]))
-                    if dif_min <= 31:
-                        max_mag = max(max_mag, eq["mag"])
+            if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
+
+                now_hour = (year*12 + month)*30*24 + hour
+                now_minute = now_hour*60 + minute
+
+                eq_hour   = (eq["year"]*12 + eq["month"])*30*24 + eq["hour"]
+                eq_minute = eq_hour*60 + eq["minute"]
+
+                dif_min = abs(now_minute - eq_minute)
+
+                if dif_min < 30:
+                    max_mag = max(max_mag, eq["mag"])
         if max_mag > 0:
             print("!!!", max_mag)
             say_text("Earthquake, magnitude is %.1f" % max_mag)
+            time.sleep(60 * 10)
 
-        time.sleep(60 * 5)
+        time.sleep(60)

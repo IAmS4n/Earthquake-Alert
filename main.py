@@ -16,6 +16,7 @@ def get_list_eq():
             xml = requests.get(url, timeout=120).content.decode('utf-8')
         except Exception as e:
             print("type error: " + str(e))
+            time.sleep(30)
             
     reddit_root = etree.fromstring(xml)
 

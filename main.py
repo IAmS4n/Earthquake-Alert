@@ -127,10 +127,10 @@ if __name__ == "__main__":
         for eq in get_list_eq():
             if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
 
-                now_hour = (year*12 + month)*30*24 + hour
+                now_hour = ((year*12 + month)*30 + day)*24 + hour
                 now_minute = now_hour*60 + minute
 
-                eq_hour   = (eq["year"]*12 + eq["month"])*30*24 + eq["hour"]
+                eq_hour   = ((eq["year"]*12 + eq["month"])*30 + eq["day"])*24 + eq["hour"]
                 eq_minute = eq_hour*60 + eq["minute"]
 
                 dif_min = abs(now_minute - eq_minute)

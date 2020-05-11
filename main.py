@@ -2,6 +2,7 @@ import os
 import time
 from datetime import datetime
 from xml.etree import ElementTree as etree
+import math
 
 import pytz
 import requests
@@ -124,8 +125,16 @@ if __name__ == "__main__":
     while True:
         max_mag = 0
         year, month, day, hour, minute = now()
-        print(year, month, day, hour, minute)
-        for eq in get_list_eq():
+        print("%d/%d/%d" % (year, month, day), "%d:%d" % (hour, minute))
+
+        eq_data = None
+        while eq_data is None:
+            try:
+                eq_data = get_list_eq()
+            except Exception as e:
+                print("type error: " + str(e))
+
+        for eq in eq_data:
             if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
 
                 now_hour = ((year*12 + month)*30 + day)*24 + hour
@@ -136,11 +145,19 @@ if __name__ == "__main__":
 
                 dif_min = abs(now_minute - eq_minute)
 
+                dh = math.floor(dif_min/60)
+                dm = dif_min - dh*60
+                if dh<=12:
+                    print("[!] %f Earthquake, %d hour and %d minute ago" % (eq["mag"], dh, dm))
+
                 if dif_min < 30:
                     max_mag = max(max_mag, eq["mag"])
         if max_mag > 0:
-            print("!!!", max_mag)
-            say_text("Earthquake, magnitude is %.1f" % max_mag)
+            print("!" * 50)
+            print(max_mag)
+            print("!" * 50)
+            
+            say_text("Earthquake. Magnitude is %.1f" % max_mag)
             time.sleep(60 * 10)
 
         time.sleep(60)

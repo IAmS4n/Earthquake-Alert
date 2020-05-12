@@ -16,7 +16,7 @@ def get_list_eq():
         try:
             xml = requests.get(url, timeout=120).content.decode('utf-8')
         except Exception as e:
-            print("type error: " + str(e))
+            print("requests error: " + str(e))
             time.sleep(30)
             
     reddit_root = etree.fromstring(xml)
@@ -103,19 +103,16 @@ def now():
 
 
 def say_text(text):
-    voice_try = 100
-    while not voice_try>=0:
-        
+    for voice_try in range(100):
         try:
             myobj = gTTS(text=text, lang="en", slow=False)
             myobj.save("./eq_tmp.mp3")
             break
         except Exception as e:
+            print("say_text error: " + str(e))
             if voice_try%10==0:
                 os.system("omxplayer -o local alarm.mp3")
-            time.sleep(10)
-
-        voice_try -= 1
+        time.sleep(10)
 
     for _ in range(3):
         os.system("omxplayer -o local alarm.mp3")
@@ -142,7 +139,8 @@ if __name__ == "__main__":
             try:
                 eq_data = get_list_eq()
             except Exception as e:
-                print("type error: " + str(e))
+                print("get_list_eq error: " + str(e))
+                time.sleep(5)
 
         for eq in eq_data:
             if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):

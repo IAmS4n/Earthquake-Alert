@@ -103,14 +103,24 @@ def now():
 
 
 def say_text(text):
-    myobj = gTTS(text=text, lang="en", slow=False)
-    myobj.save("./eq_tmp.mp3")
+    voice_try = 100
+    while not voice_try>=0:
+        
+        try:
+            myobj = gTTS(text=text, lang="en", slow=False)
+            myobj.save("./eq_tmp.mp3")
+            break
+        except Exception as e:
+            if voice_try%10==0:
+                os.system("omxplayer -o local alarm.mp3")
+            time.sleep(10)
+
+        voice_try -= 1
 
     for _ in range(3):
         os.system("omxplayer -o local alarm.mp3")
         os.system("omxplayer --vol 500 -o local eq_tmp.mp3")
         time.sleep(10)
-
 
 if __name__ == "__main__":
 

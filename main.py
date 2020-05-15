@@ -6,13 +6,14 @@ from utils import now, alarm
 
 if __name__ == "__main__":
 
-    Tehran_Latitude = 35.715298
-    Tehran_Longitude = 51.404343
+    # tehran position
+    latitude = 35.715298
+    longitude = 51.404343
 
-    min_long = Tehran_Longitude - 2
-    max_long = Tehran_Longitude + 2
-    min_lat = Tehran_Latitude - 2
-    max_lat = Tehran_Latitude + 2
+    min_long = longitude - 2
+    max_long = longitude + 2
+    min_lat = latitude - 2
+    max_lat = latitude + 2
 
     while True:
         max_mag = 0

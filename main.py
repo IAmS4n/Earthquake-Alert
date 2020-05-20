@@ -43,6 +43,7 @@ if __name__ == "__main__":
                 dm = dif_min - dh * 60
                 if dh <= 12:
                     print("[!] %f Earthquake, %d hour and %d minute ago" % (eq["mag"], dh, dm))
+                    print(eq)
 
                 if dif_min < 30:
                     max_mag = max(max_mag, eq["mag"])

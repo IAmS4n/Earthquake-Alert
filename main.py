@@ -7,13 +7,13 @@ from utils import now, alarm
 if __name__ == "__main__":
 
     # tehran position
-    latitude = 35.715298
-    longitude = 51.404343
+    latitude = 35.63145
+    longitude = 51.4574
 
-    min_long = longitude - 2
-    max_long = longitude + 2
-    min_lat = latitude - 2
-    max_lat = latitude + 2
+    min_long = longitude - 0.8
+    max_long = longitude + 0.8
+    min_lat = latitude - 0.8
+    max_lat = latitude + 0.8
 
     while True:
         max_mag = 0
@@ -31,10 +31,10 @@ if __name__ == "__main__":
         for eq in eq_data:
             if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
 
-                now_hour = ((year * 12 + month) * 30 + day) * 24 + hour
+                now_hour = ((year * 12 + month) * 31 + day) * 24 + hour
                 now_minute = now_hour * 60 + minute
 
-                eq_hour = ((eq["year"] * 12 + eq["month"]) * 30 + eq["day"]) * 24 + eq["hour"]
+                eq_hour = ((eq["year"] * 12 + eq["month"]) * 31 + eq["day"]) * 24 + eq["hour"]
                 eq_minute = eq_hour * 60 + eq["minute"]
 
                 dif_min = abs(now_minute - eq_minute)

@@ -42,7 +42,7 @@ if __name__ == "__main__":
                 dm = dif_min - dh * 60
                 if dh <= 12:
                     print("[!] %f Earthquake, %d hour and %d minute ago" % (eq["mag"], dh, dm))
-                    print("https://www.google.com/maps/place/@%f,%f" % (eq["lat"], eq["long"]))
+                    print("https://www.google.com/maps/place/@%f,%f,10z" % (eq["lat"], eq["long"]))
                     print(eq)
 
                 if dif_min < 30:

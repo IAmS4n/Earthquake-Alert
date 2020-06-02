@@ -1,3 +1,4 @@
+import math
 import os
 import time
 from datetime import datetime
@@ -54,7 +55,10 @@ def now():
     return jy, jm, jd, hour, minute
 
 
-def alarm(magnitude):
+def alarm(magnitude, volume):
+    assert 0.05 <= volume <= 2.
+    param = round(2000 * (math.log(float(volume))))
+
     for voice_try in range(100):
         try:
             myobj = gTTS(text="Earthquake. Magnitude is %.1f" % magnitude, lang="en", slow=False)
@@ -63,10 +67,10 @@ def alarm(magnitude):
         except Exception as e:
             print("say_text error: " + str(e))
             if voice_try % 10 == 0:
-                os.system("omxplayer -o local alarm.mp3")
+                os.system("omxplayer --vol %d -o local alarm.mp3" % param)
         time.sleep(10)
 
     for _ in range(3):
-        os.system("omxplayer -o local alarm.mp3")
-        os.system("omxplayer --vol 500 -o local eq_tmp.mp3")
+        os.system("omxplayer --vol %d -o local alarm.mp3" % param)
+        os.system("omxplayer --vol %d -o local eq_tmp.mp3" % param)
         time.sleep(10)

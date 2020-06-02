@@ -5,18 +5,14 @@ from data import get_list_eq
 from utils import now, alarm
 
 if __name__ == "__main__":
+    latitude = None
+    longitude = None
 
-    # tehran position
-    latitude = 35.63145
-    longitude = 51.4574
-
-    min_long = longitude - 0.8
-    max_long = longitude + 0.8
-    min_lat = latitude - 0.8
-    max_lat = latitude + 0.8
+    max_dis = 0.75
 
     while True:
         max_mag = 0
+        max_dis_scale = 0.
         year, month, day, hour, minute = now()
         print("%d/%d/%d" % (year, month, day), "%d:%d" % (hour, minute))
 
@@ -29,7 +25,10 @@ if __name__ == "__main__":
                 time.sleep(5)
 
         for eq in eq_data:
-            if (min_long < eq["long"] < max_long) and (min_lat < eq["lat"] < max_lat):
+
+            dis = math.sqrt((longitude - round(eq["long"])) ** 2. + (latitude - round(eq["lat"])) ** 2.)
+            if dis < max_dis:
+                dis_scale = 1. - min(dis / max_dis, 1.)
 
                 now_hour = ((year * 12 + month) * 31 + day) * 24 + hour
                 now_minute = now_hour * 60 + minute
@@ -43,16 +42,18 @@ if __name__ == "__main__":
                 dm = dif_min - dh * 60
                 if dh <= 12:
                     print("[!] %f Earthquake, %d hour and %d minute ago" % (eq["mag"], dh, dm))
+                    print("https://www.google.com/maps/place/@%f,%f" % (eq["lat"], eq["long"]))
                     print(eq)
 
                 if dif_min < 30:
                     max_mag = max(max_mag, eq["mag"])
+                    max_dis_scale = dis_scale
         if max_mag > 0:
             print("!" * 50)
             print(max_mag)
             print("!" * 50)
 
-            alarm(max_mag)
+            alarm(max_mag, max_dis_scale + 0.25)
             time.sleep(60 * 10)
 
         time.sleep(60)
